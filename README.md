@@ -28,6 +28,7 @@ CarePulse empowers users to log symptoms, sync wearable data, and receive AI-pow
 ---
 
 ## 🧱 Tech Stack
+![ArchitureCareplus](https://github.com/user-attachments/assets/98435859-203d-47c9-ac95-c036e70aa180)
 
 ### 🔹 Frontend
 - React Native
