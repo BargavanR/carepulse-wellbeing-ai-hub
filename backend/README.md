@@ -3,6 +3,27 @@
 
 This is the Python Flask backend for the CarePulse health monitoring application. It provides API endpoints for the React frontend and integrates with machine learning models for health analysis.
 
+## Project Structure
+
+```
+backend/
+├── app.py                 # Main application entry point
+├── models/                # Data models and simulated database
+│   ├── __init__.py
+│   └── data_store.py      # In-memory data storage
+├── routes/                # API route handlers
+│   ├── __init__.py
+│   ├── alerts.py          # Health alerts endpoints
+│   ├── health.py          # API health check
+│   ├── predictions.py     # Health predictions
+│   ├── reports.py         # Health reports
+│   ├── symptoms.py        # Symptom analysis
+│   └── wearables.py       # Wearable device data
+└── utils/                 # Utility functions
+    ├── __init__.py
+    └── analysis.py        # Health data analysis functions
+```
+
 ## Setup and Installation
 
 1. Create a virtual environment:
@@ -21,7 +42,7 @@ This is the Python Flask backend for the CarePulse health monitoring application
 
 4. Run the application:
    ```
-   python main.py
+   python app.py
    ```
 
 The API will be available at `http://localhost:5000`.
@@ -39,8 +60,8 @@ The API will be available at `http://localhost:5000`.
 To integrate your machine learning models:
 
 1. Uncomment the ML libraries in `requirements.txt`
-2. Import your model files or libraries in `main.py`
-3. Replace the placeholder `analyze_symptoms` function with your actual ML code
+2. Modify the analysis functions in `utils/analysis.py` with your actual ML code
+3. Expand the data models in `models/data_store.py` as needed
 4. Add additional ML functions as needed
 
 ## Production Deployment
