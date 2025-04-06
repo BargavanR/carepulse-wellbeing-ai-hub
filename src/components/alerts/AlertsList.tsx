@@ -41,7 +41,7 @@ const AlertsList: React.FC<AlertsListProps> = ({ alerts = [] }) => {
       title: 'High Stress Detected',
       description: 'Your heart rate variability suggests elevated stress levels. Consider taking a break.',
       timestamp: '2 hours ago',
-      type: 'warning',
+      type: 'warning' as const,
       icon: 'heart'
     },
     {
@@ -49,7 +49,7 @@ const AlertsList: React.FC<AlertsListProps> = ({ alerts = [] }) => {
       title: 'Low Hydration',
       description: 'You may be dehydrated based on your activity levels and water tracking.',
       timestamp: '5 hours ago',
-      type: 'warning',
+      type: 'warning' as const,
       icon: 'droplets'
     },
     {
@@ -57,7 +57,7 @@ const AlertsList: React.FC<AlertsListProps> = ({ alerts = [] }) => {
       title: 'Elevated Body Temperature',
       description: 'Your temperature readings are slightly above your normal baseline.',
       timestamp: '1 day ago',
-      type: 'info',
+      type: 'info' as const,
       icon: 'flame'
     },
     {
@@ -65,7 +65,7 @@ const AlertsList: React.FC<AlertsListProps> = ({ alerts = [] }) => {
       title: 'UV Exposure',
       description: 'High UV index in your area. Remember to use sunscreen if going outside.',
       timestamp: '1 day ago',
-      type: 'info',
+      type: 'info' as const,
       icon: 'sun'
     }
   ];
@@ -135,7 +135,7 @@ const AlertsList: React.FC<AlertsListProps> = ({ alerts = [] }) => {
       </CardHeader>
       <CardContent className="space-y-4">
         {displayAlerts.map((alert) => {
-          const styles = getAlertStyles(alert.type);
+          const styles = getAlertStyles(alert.type as Alert['type']);
           return (
             <div 
               key={alert.id} 
@@ -148,7 +148,7 @@ const AlertsList: React.FC<AlertsListProps> = ({ alerts = [] }) => {
                 <div className="flex justify-between items-start mb-1">
                   <h3 className="font-medium">{alert.title}</h3>
                   <Badge className={styles.badge} variant="secondary">
-                    <span className="mr-1">{getAlertTypeIcon(alert.type)}</span>
+                    <span className="mr-1">{getAlertTypeIcon(alert.type as Alert['type'])}</span>
                     {alert.type.charAt(0).toUpperCase() + alert.type.slice(1)}
                   </Badge>
                 </div>

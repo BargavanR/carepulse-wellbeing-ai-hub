@@ -125,7 +125,7 @@ def get_health_alerts(user_id):
                 "title": "High Stress Detected",
                 "description": "Your heart rate variability suggests elevated stress levels. Consider taking a break.",
                 "timestamp": "2 hours ago",
-                "type": "warning",
+                "type": "warning",  # Using a valid type from: 'critical', 'warning', 'info'
                 "icon": "heart"
             },
             {
@@ -133,7 +133,7 @@ def get_health_alerts(user_id):
                 "title": "Low Hydration",
                 "description": "You may be dehydrated based on your activity levels and water tracking.",
                 "timestamp": "5 hours ago",
-                "type": "warning",
+                "type": "warning",  # Using a valid type from: 'critical', 'warning', 'info'
                 "icon": "droplets"
             },
             {
@@ -141,7 +141,7 @@ def get_health_alerts(user_id):
                 "title": "Elevated Body Temperature",
                 "description": "Your temperature readings are slightly above your normal baseline.",
                 "timestamp": "1 day ago",
-                "type": "info",
+                "type": "info",  # Using a valid type from: 'critical', 'warning', 'info'
                 "icon": "flame"
             }
         ]
