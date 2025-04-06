@@ -20,6 +20,7 @@ import {
   Moon 
 } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
+import { healthApi } from '@/services/apiService';
 
 interface Symptom {
   id: string;
@@ -50,17 +51,39 @@ const SymptomLogger: React.FC = () => {
     return <Smile className="text-green-500" />;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setIsSubmitting(true);
-    // Simulate API call
-    setTimeout(() => {
-      setIsSubmitting(false);
+    
+    try {
+      // Format symptoms data for API
+      const symptomsData = symptoms.reduce((obj, symptom) => {
+        obj[symptom.id] = symptom.value;
+        return obj;
+      }, {} as Record<string, number>);
+      
+      // Send to Flask backend for ML processing
+      const response = await healthApi.submitSymptoms(symptomsData, notes);
+      
       toast({
-        title: "Symptoms logged successfully",
-        description: "Your health data has been recorded and analyzed.",
+        title: "Symptoms analyzed successfully",
+        description: response.message || "Your health data has been recorded and analyzed by our AI.",
       });
-      // Reset form or redirect
-    }, 1500);
+      
+      // Reset form if needed
+      // Uncomment to reset form after submission
+      // setSymptoms(symptoms.map(s => ({...s, value: s.id === 'mood' ? 50 : 0})));
+      // setNotes('');
+      
+    } catch (error) {
+      console.error("Error submitting symptoms:", error);
+      toast({
+        title: "Submission error",
+        description: "There was a problem processing your symptoms. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -128,7 +151,7 @@ const SymptomLogger: React.FC = () => {
           className="w-full bg-carepulse-teal hover:bg-carepulse-teal/90"
           disabled={isSubmitting}
         >
-          {isSubmitting ? 'Submitting...' : 'Submit Symptoms'}
+          {isSubmitting ? 'Analyzing...' : 'Submit Symptoms'}
         </Button>
       </CardFooter>
     </Card>
