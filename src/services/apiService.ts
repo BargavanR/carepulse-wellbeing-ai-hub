@@ -52,6 +52,9 @@ export const healthApi = {
     try {
       const response = await apiClient.get(`/api/alerts/${userId}`);
       return response.data;
+      
+      // Note: The API now returns alerts in response.data.alerts
+      // The frontend components may need to be updated to use this structure
     } catch (error) {
       console.error('Error fetching health alerts:', error);
       throw error;
@@ -68,6 +71,17 @@ export const healthApi = {
       return response.data;
     } catch (error) {
       console.error('Error generating report:', error);
+      throw error;
+    }
+  },
+  
+  // Check if the API is running
+  checkHealth: async () => {
+    try {
+      const response = await apiClient.get('/health');
+      return response.data;
+    } catch (error) {
+      console.error('API health check failed:', error);
       throw error;
     }
   }

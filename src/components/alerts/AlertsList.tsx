@@ -26,19 +26,23 @@ interface Alert {
   description: string;
   timestamp: string;
   type: 'critical' | 'warning' | 'info';
-  icon: React.ReactNode;
+  icon: string;
 }
 
-const AlertsList: React.FC = () => {
-  // Mock alerts - would come from API in real app
-  const alerts: Alert[] = [
+interface AlertsListProps {
+  alerts?: Alert[];
+}
+
+const AlertsList: React.FC<AlertsListProps> = ({ alerts = [] }) => {
+  // If no alerts are passed as props, use these mock alerts
+  const displayAlerts = alerts.length > 0 ? alerts : [
     {
       id: '1',
       title: 'High Stress Detected',
       description: 'Your heart rate variability suggests elevated stress levels. Consider taking a break.',
       timestamp: '2 hours ago',
       type: 'warning',
-      icon: <Heart className="h-5 w-5" />
+      icon: 'heart'
     },
     {
       id: '2',
@@ -46,7 +50,7 @@ const AlertsList: React.FC = () => {
       description: 'You may be dehydrated based on your activity levels and water tracking.',
       timestamp: '5 hours ago',
       type: 'warning',
-      icon: <Droplets className="h-5 w-5" />
+      icon: 'droplets'
     },
     {
       id: '3',
@@ -54,7 +58,7 @@ const AlertsList: React.FC = () => {
       description: 'Your temperature readings are slightly above your normal baseline.',
       timestamp: '1 day ago',
       type: 'info',
-      icon: <Flame className="h-5 w-5" />
+      icon: 'flame'
     },
     {
       id: '4',
@@ -62,7 +66,7 @@ const AlertsList: React.FC = () => {
       description: 'High UV index in your area. Remember to use sunscreen if going outside.',
       timestamp: '1 day ago',
       type: 'info',
-      icon: <Sun className="h-5 w-5" />
+      icon: 'sun'
     }
   ];
 
@@ -108,6 +112,21 @@ const AlertsList: React.FC = () => {
     }
   };
 
+  const getIconComponent = (iconName: string) => {
+    switch (iconName) {
+      case 'heart':
+        return <Heart className="h-5 w-5" />;
+      case 'droplets':
+        return <Droplets className="h-5 w-5" />;
+      case 'flame':
+        return <Flame className="h-5 w-5" />;
+      case 'sun':
+        return <Sun className="h-5 w-5" />;
+      default:
+        return <Info className="h-5 w-5" />;
+    }
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -115,7 +134,7 @@ const AlertsList: React.FC = () => {
         <CardDescription>Recent notifications about your health</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        {alerts.map((alert) => {
+        {displayAlerts.map((alert) => {
           const styles = getAlertStyles(alert.type);
           return (
             <div 
@@ -123,7 +142,7 @@ const AlertsList: React.FC = () => {
               className={cn("p-4 rounded-lg flex items-start", styles.bgColor)}
             >
               <div className={cn("rounded-full p-2 mr-3", styles.bgColor)}>
-                <div className={styles.icon}>{alert.icon}</div>
+                <div className={styles.icon}>{getIconComponent(alert.icon)}</div>
               </div>
               <div className="flex-1">
                 <div className="flex justify-between items-start mb-1">

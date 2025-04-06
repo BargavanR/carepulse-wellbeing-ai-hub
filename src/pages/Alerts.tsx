@@ -5,8 +5,18 @@ import AlertsList from '@/components/alerts/AlertsList';
 import { healthApi } from '@/services/apiService';
 import { useToast } from '@/components/ui/use-toast';
 
+interface Alert {
+  id: string;
+  title: string;
+  description: string;
+  timestamp: string;
+  type: 'critical' | 'warning' | 'info';
+  icon: string;
+}
+
 const Alerts: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [alerts, setAlerts] = useState<Alert[]>([]);
   const { toast } = useToast();
   
   useEffect(() => {
@@ -15,8 +25,12 @@ const Alerts: React.FC = () => {
         setIsLoading(true);
         // Assuming you'll have user authentication set up later
         // For now using a placeholder userId
-        await healthApi.getHealthAlerts('current-user-id');
-        // The AlertsList component will receive the data through props or context
+        const response = await healthApi.getHealthAlerts('current-user-id');
+        
+        // The Flask backend returns alerts in response.alerts
+        if (response && response.alerts) {
+          setAlerts(response.alerts);
+        }
       } catch (error) {
         console.error('Failed to fetch alerts:', error);
         toast({
@@ -46,7 +60,7 @@ const Alerts: React.FC = () => {
           <p className="text-muted-foreground">Analyzing your health data...</p>
         </div>
       ) : (
-        <AlertsList />
+        <AlertsList alerts={alerts} />
       )}
     </AppLayout>
   );
